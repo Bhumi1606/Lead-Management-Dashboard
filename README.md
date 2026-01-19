@@ -50,6 +50,21 @@ npm start
 ```bash
 cd frontend
 npm install
+```
+
+Create a `.env` file in the `frontend` directory:
+
+```env
+# For local development
+REACT_APP_API_URL=http://localhost:5000/api
+
+# For production (after deploying backend)
+REACT_APP_API_URL=https://lead-management-dashboard-63qc.onrender.com/api
+```
+
+Then start the frontend:
+
+```bash
 npm start
 ```
 
@@ -66,7 +81,28 @@ This will create 500 dummy leads with various stages, statuses, and dates.
 
 ## Deployment
 
-### Vercel Deployment
+### Backend Deployment (Render)
+
+1. **Create a Web Service on Render**
+   - Go to [Render](https://render.com) and create a new Web Service
+   - Connect your GitHub repository
+   - Configure settings:
+     - **Root Directory**: `backend`
+     - **Environment**: Node
+     - **Build Command**: `npm install`
+     - **Start Command**: `npm start`
+
+2. **Set Environment Variables in Render Dashboard**
+   ```
+   MONGODB_URI=your_mongodb_atlas_connection_string
+   JWT_SECRET=your_jwt_secret_key
+   ```
+
+3. **Deploy and get your backend URL**
+   - After deployment, Render will provide a URL like: `https://your-service.onrender.com`
+   - Test the API: `https://your-service.onrender.com/api/health`
+
+### Frontend Deployment (Vercel)
 
 #### Option 1: Deploy as Monorepo (Recommended)
 
@@ -83,36 +119,11 @@ This will create 500 dummy leads with various stages, statuses, and dates.
 
 3. **Set Environment Variables in Vercel Dashboard**
    ```
-   MONGODB_URI=your_mongodb_atlas_connection_string
-   JWT_SECRET=your_jwt_secret_key
-   REACT_APP_API_URL=https://your-backend-url.vercel.app/api
+   REACT_APP_API_URL=https://your-backend-url.onrender.com/api
    ```
+   (Replace with your actual Render backend URL)
 
-4. **Deploy Backend Separately**
-   - Create a new Vercel project for the backend
-   - Root Directory: `backend`
-   - Framework Preset: Other
-   - Build Command: (leave empty or `npm install`)
-   - Output Directory: (leave empty)
-   - Install Command: `npm install`
-
-#### Option 2: Deploy Frontend and Backend Separately
-
-**Backend Deployment:**
-1. Create a new Vercel project
-2. Set root directory to `backend`
-3. Add environment variables: `MONGODB_URI`, `JWT_SECRET`
-4. Deploy
-
-**Frontend Deployment:**
-1. Create a new Vercel project
-2. Set root directory to `frontend`
-3. Set build command: `npm run build`
-4. Set output directory: `build`
-5. Add environment variable: `REACT_APP_API_URL` (pointing to your backend URL)
-6. Deploy
-
-**Note:** After deploying backend, update `REACT_APP_API_URL` in frontend environment variables with the backend URL.
+**Note:** Make sure to update `REACT_APP_API_URL` in Vercel environment variables with your Render backend URL after deployment.
 
 ## Demo Credentials
 
